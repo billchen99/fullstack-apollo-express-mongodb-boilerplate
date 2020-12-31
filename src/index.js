@@ -100,6 +100,13 @@ connectDb().then(async () => {
     createUsersWithMessages(new Date());
   }
 
+  await Promise.all([
+    models.User.deleteMany({}),
+    models.Message.deleteMany({}),
+  ]);
+  createUsersWithMessages(new Date());
+
+
   httpServer.listen({ port }, () => {
     console.log(`Apollo Server on http://localhost:${port}/graphql`);
   });
@@ -136,6 +143,8 @@ const createUsersWithMessages = async date => {
     createdAt: date.setSeconds(date.getSeconds() + 1),
     userId: user2.id,
   });
+
+  console.log("example data saved")
 
   await message1.save();
   await message2.save();
